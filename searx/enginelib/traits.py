@@ -32,8 +32,24 @@ class EngineTraitsEncoder(json.JSONEncoder):
             return o.__dict__
         return super().default(o)
         
-        """branchles version"""
-        # return getattr(o, '__dict__', super().default(o))
+"""branchles version"""
+"""
+import json
+
+class EngineTraits:
+    # Assuming EngineTraits has some attributes
+    def __init__(self, attribute1, attribute2):
+        self.attribute1 = attribute1
+        self.attribute2 = attribute2
+
+class EngineTraitsEncoder(json.JSONEncoder):
+    # Encodes :class:`EngineTraits` to a serializable object, see :class:`json.JSONEncoder`.
+
+    def default(self, o):
+        # Return dictionary of a :class:`EngineTraits` object.
+        return getattr(o, '__dict__', super().default(o))
+
+"""
 
 
 @dataclasses.dataclass
@@ -103,6 +119,24 @@ class EngineTraits:
             return self.all_locale
         return locales.get_engine_locale(searxng_locale, self.languages, default=default)
 
+    """branchless version"""
+    """
+    def get_language(self, searxng_locale: str, default=None):
+    # Return engine's language string that *best fits* to SearXNG's locale.
+
+    # :param searxng_locale: SearXNG's internal representation of locale
+      # selected by the user.
+
+    # :param default: engine's default language
+
+    # The *best fits* rules are implemented in
+    # :py:obj:`searx.locales.get_engine_locale`.  Except for the special value ``all``
+    # which is determined from :py:obj:`EngineTraits.all_locale`.
+    
+    return self.all_locale if searxng_locale == 'all' and self.all_locale is not None else locales.get_engine_locale(searxng_locale, self.languages, default=default)
+
+    """
+    
     def get_region(self, searxng_locale: str, default=None):
         """Return engine's region string that best fits to SearXNG's locale.
 
