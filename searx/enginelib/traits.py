@@ -31,6 +31,9 @@ class EngineTraitsEncoder(json.JSONEncoder):
         if isinstance(o, EngineTraits):
             return o.__dict__
         return super().default(o)
+        
+        """branchles version"""
+        # return getattr(o, '__dict__', super().default(o))
 
 
 @dataclasses.dataclass
